@@ -4,20 +4,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rentality – Web3 Mobility Layer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        .switch {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 64px;
+  height: 32px;
+  background: #2a2a2a;
+  border-radius: 32px;
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  box-sizing: border-box;
+}
+        .switch input {
+            display: none;
+        }
+        .slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.slider i {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  z-index: 3;
+  font-size: 14px;
+}
+.slider i.fa-sun {
+  left: 4px;
+  top: 4px;
+  color: #fdd835;
+  z-index: 3;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slider i.fa-moon {
+  right: 4px;
+  top: 4px;
+  color: #90caf9;
+  z-index: 3;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.switch input:checked + .slider::before {
+  transform: translateX(32px);
+  content: "";
+}
+.switch .slider::before {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border-radius: 50%;
+  top: 4px;
+  left: 4px;
+  transition: transform 0.3s ease;
+  z-index: 2;
+}
+.slider i {
+  font-size: 14px;
+  z-index: 2;
+}
+.switch input:checked + .slider::before {
+  transform: translateX(32px);
+}
+.switch .slider::before {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border-radius: 50%;
+  top: 4px;
+  left: 4px;
+  transition: transform 0.3s ease;
+  z-index: 1;
+}
+        .slider i:first-child {
+            color: #fdd835;
+        }
+        .slider i:last-child {
+            color: #90caf9;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #444;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        body.light-theme {
+            transition: background 0.3s ease, color 0.3s ease;
+            background: #ffffff;
+            color: #222;
+        }
+        body.light-theme header,
+        body.light-theme main {
+            background: #f9f9f9;
+            color: #222;
+        }
+        body.light-theme .links-grid,
+        body.light-theme footer {
+            background: #efefef;
+            color: #000;
+        }
+        body.light-theme a {
+            color: #0044cc;
+        }
+        body.light-theme a:hover {
+            color: #000;
+        }
         body {
-            font-family: Arial, sans-serif;
+            transition: background 0.3s ease, color 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
-            background: #f4f4f4;
-            color: #333;
+            background: #121212;
+            color: #f0f0f0;
+            line-height: 1.7;
         }
         header {
-            background: #0b0b28;
+            background: #1e1e2f;
             color: #fff;
             padding: 2rem;
             text-align: center;
-            background-image: url('cover.png');
+            background-image: url('82012759-723d-416c-bb1a-6b1ad14303b0.png');
             background-size: cover;
             background-position: center;
             position: relative;
@@ -43,30 +185,137 @@
         }
         main {
             padding: 2rem;
-            max-width: 900px;
+            max-width: 1000px;
             margin: auto;
-            background: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background: #1a1a1a;
+            box-shadow: 0 0 10px rgba(255,255,255,0.05);
+            position: relative;
         }
-        h1, h2 {
-            color: #0b0b28;
+        section {
+            margin-bottom: 2.5rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+        }
+        h2 {
+            font-size: 1.6rem;
+            color: #9db3ff;
+            margin-bottom: 1rem;
         }
         ul {
             padding-left: 1.2rem;
+            margin-top: 0.5rem;
+        }
+        ul li a {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #2b2b2b;
+            color: #ffffff;
+            border-radius: 6px;
+            margin-bottom: 6px;
         }
         footer {
             text-align: center;
             padding: 1rem;
             font-size: 0.9rem;
-            color: #888;
+            color: #bbb;
+            background: #0f0f0f;
         }
         a {
-            color: #0b0b28;
+            color: #9db3ff;
             text-decoration: none;
+            transition: all 0.3s ease-in-out;
+        }
+        a:hover {
+            color: #ffffff;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: #5e3fd7;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 2rem;
+            transition: background 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #432ab6;
+        }
+        .links-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+            background: #222;
+            padding: 2rem;
+            border-radius: 12px;
+        }
+        .links-grid h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #9db3ff;
+        }
+        .links-grid a {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .links-grid i {
+            margin-right: 10px;
+            color: #9db3ff;
+        }
+        @media screen and (max-width: 768px) {
+            main {
+                padding: 1rem;
+            }
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
+<script>
+  // Apply theme from localStorage on load
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-theme');
+      document.querySelector('.switch input').checked = true;
+    }
+  });
+
+  function toggleTheme() {
+    const body = document.body;
+    const isLight = body.classList.toggle('light-theme');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  }
+  // Dynamic icon visibility
+  const sunIcon = document.getElementById('icon-sun');
+  const moonIcon = document.getElementById('icon-moon');
+  const themeToggleInput = document.querySelector('.switch input');
+
+  function updateIcons() {
+    if (document.body.classList.contains('light-theme')) {
+      sunIcon.style.display = 'block';
+      moonIcon.style.display = 'none';
+    } else {
+      sunIcon.style.display = 'none';
+      moonIcon.style.display = 'block';
+    }
+  }
+
+  themeToggleInput.addEventListener('change', updateIcons);
+  window.addEventListener('DOMContentLoaded', updateIcons);
+</script>
 </head>
 <body>
+    <label class="switch">
+  <input type="checkbox" onclick="toggleTheme()">
+  <span class="slider">
+    <i class="fas fa-sun" id="icon-sun"></i>
+    <i class="fas fa-moon" id="icon-moon"></i>
+</span>
+</label>
     <header>
         <img src="logo_rentality_RGB_for web-06 _111.png" alt="Rentality Logo">
         <h1>Rentality</h1>
@@ -144,18 +393,40 @@
             <p>Backing us means becoming a core signal to a growing community.</p>
         </section>
 
-        <section>
-            <h2>📎 Additional Links</h2>
-            <ul>
-                <li><a href="https://docsend.com/view/gatu5u442hqqqr89" target="_blank">1-pager</a></li>
-                <li><a href="https://docsend.com/view/2dpnd7svfrydbhvi" target="_blank">Pitch</a></li>
-                <li><a href="https://www.youtube.com/watch?v=a7M75TqS7eQ" target="_blank">AI Video Pitch</a></li>
-                <li><a href="https://www.youtube.com/watch?v=7J30oDTU7do" target="_blank">Fractional Investment Demo</a></li>
-                <li><a href="https://docsend.com/view/swwz3ky2s62s9fhg" target="_blank">Wagmi Miami Presentation</a></li>
-                <li><a href="https://rentality.io" target="_blank">Rentality Platform</a></li>
-                <li><a href="https://www.linkedin.com/in/oleksandr-tatura-7a9975/" target="_blank">Founder: Alex Tatura</a></li>
-            </ul>
-        </section>
+        <div class="links-grid">
+    <div>
+        <h3>📎 Additional Links</h3>
+        <a href="https://docsend.com/view/gatu5u442hqqqr89" target="_blank"><i class="fas fa-file-alt"></i>1-pager</a>
+        <a href="https://docsend.com/view/2dpnd7svfrydbhvi" target="_blank"><i class="fas fa-chalkboard"></i>Pitch</a>
+        <a href="https://www.youtube.com/watch?v=a7M75TqS7eQ" target="_blank"><i class="fab fa-youtube"></i>AI Video Pitch</a>
+        <a href="https://www.youtube.com/watch?v=7J30oDTU7do" target="_blank"><i class="fab fa-youtube"></i>Fractional Investment Demo</a>
+        <a href="https://docsend.com/view/swwz3ky2s62s9fhg" target="_blank"><i class="fas fa-chart-line"></i>Wagmi Miami Presentation</a>
+        <a href="https://rentality.io" target="_blank"><i class="fas fa-car"></i>Rentality Platform</a>
+        <a href="https://www.linkedin.com/in/oleksandr-tatura-7a9975/" target="_blank"><i class="fab fa-linkedin"></i>Founder: Alex Tatura</a>
+    </div>
+    <div>
+        <h3>🔗 Follow Us</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div>
+                <a href="https://x.com/Rentality_Info" target="_blank"><i class="fab fa-twitter"></i> Twitter (X)</a>
+                <a href="https://t.me/rentality_xyz" target="_blank"><i class="fab fa-telegram"></i> Telegram</a>
+                <a href="https://discord.gg/rentality" target="_blank"><i class="fab fa-discord"></i> Discord</a>
+                <a href="https://warpcast.com/rentality" target="_blank"><i class="fas fa-broadcast-tower"></i> Warpcast</a>
+                <a href="https://www.linkedin.com/company/rentalitycorp/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            </div>
+            <div>
+                <a href="https://www.youtube.com/@Rentality_xyz" target="_blank"><i class="fab fa-youtube"></i> YouTube</a>
+                <a href="https://medium.com/@rentality" target="_blank"><i class="fab fa-medium"></i> Medium</a>
+                <a href="https://www.instagram.com/rentality_/" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="https://zealy.io/cw/rentality/questboard" target="_blank"><i class="fas fa-star"></i> Zealy Quests</a>
+                <a href="https://app.galxe.com/quest/MhVJU3ph5tsc5XPhhHxYVL/GCa1mtpg3g" target="_blank"><i class="fas fa-certificate"></i> Galxe Quest</a>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+
+        <a href="mailto:info@rentality.io" class="cta-button">Request Demo or Connect</a>
     </main>
     <footer>
         &copy; 2025 Rentality. All rights reserved.
